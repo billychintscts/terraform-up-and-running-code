@@ -1,12 +1,31 @@
 terraform {
-  required_version = ">= 0.12, < 0.13"
-}
+  required_providers {
+    aws = {
+      source = "hashicorp/aws"
+      version = "~> 3.5"     
+    }
 
+  }
+  required_version = ">= 0.12, <= 1.0.2"
+  # after the bucket name and dynamodb table created, include this block
+  backend "s3" {
+    # Replace this with your bucket name!
+    bucket         = "mysf-uat-bucket"
+    key            = "global/s3/terraform.tfstate"
+    region         = "ap-southeast-2"
+
+    # Replace this with your DynamoDB table name!
+    dynamodb_table = "global-terraform.tfstate"
+    encrypt        = true
+  }
+  
+}
+ 
 provider "aws" {
-  region = "us-east-2"
+  region = "ap-southeast-2"
 
   # Allow any 2.x version of the AWS provider
-  version = "~> 2.0"
+  #version = "~> 2.0"
 }
 
 resource "aws_s3_bucket" "terraform_state" {

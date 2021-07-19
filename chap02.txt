@@ -1,0 +1,340 @@
+Terraform and AWS
+-----------------
+(i)   setting up aws a/c (done)
+(ii)  add in the necessary policy
+(iii) terraform init (documented in old terrafomr version, especially terraform block)
+       
+      teraform block is compulsory for latest releases 
+      specify required_provider (aws, version is optional)
+      version can also specify in the provider aws
+      required_version is for terraform version
+
+(iv)  terraform init    
+      .terraform (store the path)
+       /providers/registry.terraform.io/hashicorp/aws/3.50.0/linux_amd64/terraform-provider-aws_v3.50.0_x5
+
+      .terraform.lock.hcl (lock the aws version ,the terraform version, avoid breaks)
+(v) terraform plan (sanity check)
+    + create (green)
+    - destroy (red)
+    ~ modify 
+    the state is locked when plan/apply
+    {} terraform.tfstate
+    terraform.tfstate.backup 
+
+(vi) terraform apply, still run terraform plan with a promt to create
+(vii) terraform destroy
+
+git add code/terraform/00-preface/hello-world/main.tf
+git remote add origin git@github.com:billychintscts/terraform-up-and-running-code.git
+git push origin master
+will invoke signin, + vs code  open 
+in case need to pull 
+
+(viii) add web server, using userdata
+before run, the state information 
+{
+  "version": 4,
+  "terraform_version": "1.0.2",
+  "serial": 5,
+  "lineage": "946f46b6-6b24-0a41-2bdc-5ba2329ff2d6",
+  "outputs": {},
+  "resources": []
+}
+
+
+-- the tfstate contents 
+{
+  "version": 4,
+  "terraform_version": "1.0.2",
+  "serial": 7,
+  "lineage": "946f46b6-6b24-0a41-2bdc-5ba2329ff2d6",
+  "outputs": {},
+  "resources": [
+    {
+      "mode": "managed",
+      "type": "aws_instance",
+      "name": "mysf_test",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 1,
+          "attributes": {
+            "ami": "ami-0dc2d3e4c0f9ebd18",
+            "arn": "arn:aws:ec2:us-east-1:266170445194:instance/i-0a3976b1eb299ef54",
+            "associate_public_ip_address": true,
+            "availability_zone": "us-east-1d",
+            "capacity_reservation_specification": [
+              {
+                "capacity_reservation_preference": "open",
+                "capacity_reservation_target": []
+              }
+            ],
+            "cpu_core_count": 1,
+            "cpu_threads_per_core": 1,
+            "credit_specification": [
+              {
+                "cpu_credits": "standard"
+              }
+            ],
+            "disable_api_termination": false,
+            "ebs_block_device": [],
+            "ebs_optimized": false,
+            "enclave_options": [
+              {
+                "enabled": false
+              }
+            ],
+            "ephemeral_block_device": [],
+            "get_password_data": false,
+            "hibernation": false,
+            "host_id": null,
+            "iam_instance_profile": "",
+            "id": "i-0a3976b1eb299ef54",
+            "instance_initiated_shutdown_behavior": "stop",
+            "instance_state": "running",
+            "instance_type": "t2.micro",
+            "ipv6_address_count": 0,
+            "ipv6_addresses": [],
+            "key_name": "",
+            "metadata_options": [
+              {
+                "http_endpoint": "enabled",
+                "http_put_response_hop_limit": 1,
+                "http_tokens": "optional"
+              }
+            ],
+            "monitoring": false,
+            "network_interface": [],
+            "outpost_arn": "",
+            "password_data": "",
+            "placement_group": "",
+            "primary_network_interface_id": "eni-0dceb47bb277abf5c",
+            "private_dns": "ip-172-31-1-1.ec2.internal",
+            "private_ip": "172.31.1.1",
+            "public_dns": "ec2-3-232-56-143.compute-1.amazonaws.com",
+            "public_ip": "3.232.56.143",
+            "root_block_device": [
+              {
+                "delete_on_termination": true,
+                "device_name": "/dev/xvda",
+                "encrypted": false,
+                "iops": 100,
+                "kms_key_id": "",
+                "tags": {},
+                "throughput": 0,
+                "volume_id": "vol-0b47db00d50cd89f0",
+                "volume_size": 8,
+                "volume_type": "gp2"
+              }
+            ],
+            "secondary_private_ips": [],
+            "security_groups": [
+              "default"
+            ],
+            "source_dest_check": true,
+            "subnet_id": "subnet-7f5c3519",
+            "tags": {
+              "Name": "mysf_test"
+            },
+            "tags_all": {
+              "Name": "mysf_test"
+            },
+            "tenancy": "default",
+            "timeouts": null,
+            "user_data": "67e34b406ab639a606a64fe06965b26bf8036a9c",
+            "user_data_base64": null,
+            "volume_tags": null,
+            "vpc_security_group_ids": [
+              "sg-1fdc601e"
+            ]
+          },
+          "sensitive_attributes": [],
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjo2MDAwMDAwMDAwMDAsImRlbGV0ZSI6MTIwMDAwMDAwMDAwMCwidXBkYXRlIjo2MDAwMDAwMDAwMDB9LCJzY2hlbWFfdmVyc2lvbiI6IjEifQ=="
+        }
+      ]
+    }
+  ]
+}
+
+-- add in the securoty group to make the web server work ----
+-- need ubuntu server
+terraform instance_initiated_shutdown_behavior
+# aws_instance.mysf_test:
+resource "aws_instance" "mysf_test" {
+    ami                                  = "ami-09e67e426f25ce0d7"
+    arn                                  = "arn:aws:ec2:us-east-1:266170445194:instance/i-02a1d4ed8285caed0"
+    associate_public_ip_address          = true
+    availability_zone                    = "us-east-1d"
+    cpu_core_count                       = 1
+    cpu_threads_per_core                 = 1
+    disable_api_termination              = false
+    ebs_optimized                        = false
+    get_password_data                    = false
+    hibernation                          = false
+    id                                   = "i-02a1d4ed8285caed0"
+    instance_initiated_shutdown_behavior = "stop"
+    instance_state                       = "running"
+    instance_type                        = "t2.micro"
+    ipv6_address_count                   = 0
+    ipv6_addresses                       = []
+    monitoring                           = false
+    primary_network_interface_id         = "eni-0698939123d593c04"
+    private_dns                          = "ip-172-31-7-100.ec2.internal"
+    private_ip                           = "172.31.7.100"
+    public_dns                           = "ec2-54-157-106-248.compute-1.amazonaws.com"
+    public_ip                            = "54.157.106.248"
+    secondary_private_ips                = []
+    security_groups                      = [
+        "terraform-example-instance",
+    ]
+    source_dest_check                    = true
+    subnet_id                            = "subnet-7f5c3519"
+    tags                                 = {
+        "Name" = "mysf_test"
+    }
+    tags_all                             = {
+        "Name" = "mysf_test"
+    }
+    tenancy                              = "default"
+    user_data                            = "67e34b406ab639a606a64fe06965b26bf8036a9c"
+    vpc_security_group_ids               = [
+        "sg-0d35b8ff2a747f90c",
+    ]
+
+    capacity_reservation_specification {
+        capacity_reservation_preference = "open"
+    }
+
+    credit_specification {
+        cpu_credits = "standard"
+    }
+
+    enclave_options {
+        enabled = false
+    }
+
+    metadata_options {
+        http_endpoint               = "enabled"
+        http_put_response_hop_limit = 1
+        http_tokens                 = "optional"
+    }
+
+    root_block_device {
+        delete_on_termination = true
+        device_name           = "/dev/sda1"
+        encrypted             = false
+        iops                  = 100
+        tags                  = {}
+        throughput            = 0
+        volume_id             = "vol-0fd6981c689321e6f"
+        volume_size           = 8
+        volume_type           = "gp2"
+    }
+}
+
+# aws_security_group.instance:
+resource "aws_security_group" "instance" {
+    arn                    = "arn:aws:ec2:us-east-1:266170445194:security-group/sg-0d35b8ff2a747f90c"
+    description            = "Managed by Terraform"
+    egress                 = []
+    id                     = "sg-0d35b8ff2a747f90c"
+    ingress                = [
+        {
+            cidr_blocks      = [
+                "0.0.0.0/0",
+            ]
+            description      = ""
+            from_port        = 8080
+            ipv6_cidr_blocks = []
+            prefix_list_ids  = []
+            protocol         = "tcp"
+            security_groups  = []
+            self             = false
+            to_port          = 8080
+        },
+    ]
+    name                   = "terraform-example-instance"
+    owner_id               = "266170445194"
+    revoke_rules_on_delete = false
+    tags_all               = {}
+    vpc_id                 = "vpc-93f075ee"
+}
+
+[chin@chws hello-world]$ terraform state list
+aws_instance.mysf_test
+aws_security_group.instance
+
+# adjust in aws console to add one more tag 
+terraform show will see tha tags updated similar to manual update in console
+
+terraform plan, indicate change in tag, next apply 
+uncahnge attributes hidden, 5 unchange blocked hidden
+
+terraform show, the tag is gone as it will take from the config, immutable
+
+after destroy
+terraform show, no information
+terraform state list, resources are not available 
+
+
+DRY Principle
+---------------
+- port number, make it configurable
+
+priority of loading variable 
+-----------------------------
+ - oprion -var-file=" "
+ - TF_VAR_variable
+ - default value specify in variable
+ - if not, prompt 
+Type of variable 
+----------------
+ - string 
+ - number 
+ - bool 
+ - list 
+ - map 
+ - set 
+ - object 
+ - tuple 
+ - any 
+ (most bla sn)
+
+ define input variables
+    var.variable_name
+ define in output 
+    aws_instance.mysf_test.public_ip
+ terraform output or the specific public ip 
+    will get the same output 
+
+ASG - Auto Scaling Groups
+--------------------------
+- launch configuration 
+document in world
+terraform graph > cluster.dot
+terraform graph | dot -Tsvg > graph.svg 
+sudo yum install graphviz
+chromium graph.svg 
+terraform graph -type=plan | dot -Tpng > graph.png or 
+terraform graph -type=plan | dot -Tpng -o bucketgraph.png
+
+-- using terraform visual 
+
+terraform plan -out=plan.out
+terraform show -json plan.out > plan.json
+submit file to terraform visual
+
+
+terraform init -backend-config=backend.hcl
+
+
+
+
+
+
+
+
+      
+
+ 

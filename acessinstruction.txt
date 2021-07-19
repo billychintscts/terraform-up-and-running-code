@@ -1,0 +1,20 @@
+1   console
+    ----------
+     Sign-in URL: https://edms-ipl-pcloud.signin.aws.amazon.com/console 
+    User name: thamsang.chin@ncs.com.sg 
+
+2   aws cli
+    ----------
+aws sts get-session-token --serial-number  arn:aws:iam::266170445194:mfa/thamsang.chin@ncs.com.sg --token-code 816263
+ 
+use export, it seems got issue now to acesss QLK1iN3KXNC6cPW5exClXfnnV4n9C2cYJOxeKMUbxikrSAirz1vKkNOkJHLyRnf4nHiU8nJQd4hpVpVl6EX9U7jIuagYWAk
+
+export AWS_ACCESS_KEY_ID="ASIAT36H6VWFAU6V4ZVI"
+export AWS_SECRET_ACCESS_KEY="/ulPkFlBfNNiRQ6bQ67CYbxspVuiCd1tWXn49IBz"
+export AWS_SESSION_TOKEN="IQoJb3JpZ2luX2VjEH0aDmFwLXNvdXRoZWFzdC0yIkgwRgIhANTtQtpR6P7HKM5s/6vapwea4fZiUnByyTAHsPEC5MXFAiEA2Eh/GAPOKtY1cXEAl6AhqL5bpFQIzVhd0RWn2MMOmOsq7wEIdhAAGgwyNjYxNzA0NDUxOTQiDObUZU88xKsWJ49lFirMAfcd1cgFgtdnpb4JC8oI7ES1eRdeLZ6POBromAFDg7LZY9q3jmYdoyw0bZARpVNsxjs+MNvPe8aechmqhUEJxzOoWbY5ahMpXw12RRxo1VaD1cG5lv1OZHuq/hwaaO6edJ2KT6ldkuAfJVichF/r0C/srQ/lQRTmRp0M/KDHFyCavz9GERAhm8E5FLM5MzCebyVZLakW3tkkChGaXiV7a+KUFbw2xnZ3G3u189N5sG+gEvPJYqBJaEfcqPqiPk9FdidkRxD6Jtx2i915XjCbvNCHBjqXAUGtEj6kAFUr5QdruKAHkWksxa21AVS8t2QBvnXmJBLbR27A0F26cMjr2jkF7lix7kvWLtrd3MBKmlOOXNnC3H7ZysgMrkKI1u+dJgCM70bds3JBcr72QpFk2hcYWstljosqJA+Uv3PVfmLt1YVRDbK6eYjeXCI/oI8wsuVSPM+ioY8N0zqd9FneQ/4rqkmjLeTLMKhKRro="
+export AWS_DEFAULT_REGION="ap-southeast-2" 
+
+unset AWS_ACCESS_KEY_ID
+unset AWS_SECRET_ACCESS_KEY
+unset AWS_SESSION_TOKEN
+unset AWS_DEFAULT_REGION

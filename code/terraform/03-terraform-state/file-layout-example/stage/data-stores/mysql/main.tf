@@ -1,27 +1,20 @@
 terraform {
-  required_version = ">= 0.12, < 0.13"
-}
-
-terraform {
+  required_providers {
+    aws = {
+      source  = "Hashicorp/aws"
+      version = "~> 3.5"
+    }
+  }
+  required_version = ">= 0.12, <= 1.0.2"
   backend "s3" {
-
-    # This backend configuration is filled in automatically at test time by Terratest. If you wish to run this example
-    # manually, uncomment and fill in the config below.
-
-    # bucket         = "<YOUR S3 BUCKET>"
-    # key            = "<SOME PATH>/terraform.tfstate"
-    # region         = "us-east-2"
-    # dynamodb_table = "<YOUR DYNAMODB TABLE>"
-    # encrypt        = true
-
+    key            = "stage/s3/terraform.tfstate"
   }
 }
 
-provider "aws" {
-  region = "us-east-2"
 
-  # Allow any 2.x version of the AWS provider
-  version = "~> 2.0"
+
+provider "aws" {
+  region = var.region
 }
 
 resource "aws_db_instance" "example" {

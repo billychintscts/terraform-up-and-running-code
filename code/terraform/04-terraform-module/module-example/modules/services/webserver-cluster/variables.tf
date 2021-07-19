@@ -44,3 +44,8 @@ variable "server_port" {
   default     = 8080
 }
 
+variable "region" {
+  description = "The region"
+  type        = string
+  default     = "ap-southeast-2"
+}

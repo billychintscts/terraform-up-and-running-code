@@ -1,0 +1,17 @@
+module basic
+- 
+
+module input - variavle 
+- cluster_name
+- db_remote_state_bucket
+- db_remote_state_key
+- etc specify in the variables.tf
+
+module local in a local blocks
+- dun want to specify in the variable to be overriden, use local 
+  use local.name to extract 
+
+module output
+- add resource aws_autoscaling_schedule for production
+value = aws_autoscaling_group.example.name
+

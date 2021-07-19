@@ -1,0 +1,40 @@
+terraform {
+  required_version = ">= 0.12, < 1.0.3"
+}
+
+provider "aws" {
+  region = "us-east-2"
+
+  # Allow any 2.x version of the AWS provider
+  version = "~> 2.0"
+}
+
+resource "aws_instance" "example" {
+  ami           = "ami-0c55b159cbfafe1f0"
+  instance_type = "t2.micro"
+}
+
+/* output of plan
+Initializing the backend...
+
+Initializing provider plugins...
+- Finding hashicorp/aws versions matching "~> 2.0"...
+- Installing hashicorp/aws v2.70.0...
+- Installed hashicorp/aws v2.70.0 (signed by HashiCorp)
+
+Terraform has created a lock file .terraform.lock.hcl to record the provider
+selections it made above. Include this file in your version control repository
+so that Terraform can guarantee to make the same selections by default when
+you run "terraform init" in the future.
+
+
+ Warning: Version constraints inside provider configuration blocks are deprecated
+ 
+   on main.tf line 9, in provider "aws":
+    9:   version = "~> 2.0"
+ 
+ Terraform 0.13 and earlier allowed provider version constraints inside the provider configuration block, but that is now
+ deprecated and will be removed in a future version of Terraform. To silence this warning, move the provider version constraint
+ into the required_providers block.
+
+*/

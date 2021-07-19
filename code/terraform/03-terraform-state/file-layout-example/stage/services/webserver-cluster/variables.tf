@@ -5,12 +5,14 @@
 
 variable "db_remote_state_bucket" {
   description = "The name of the S3 bucket used for the database's remote state storage"
-  type        = string
+  type        = string 
+  default     = "mysf-uat-bucket"
 }
 
 variable "db_remote_state_key" {
   description = "The name of the key in the S3 bucket used for the database's remote state storage"
-  type        = string
+  type        = string 
+  default     = "stage/s3/terraform.tfstate"
 }
 
 # ---------------------------------------------------------------------------------------------------------------------
@@ -41,3 +43,29 @@ variable "alb_security_group_name" {
   type        = string
   default     = "terraform-example-alb"
 }
+
+variable "region" {
+  description = "The region"
+  type        = string
+  default     = "ap-southeast-2"
+}
+
+variable "rhel8" {
+  description = "The redhat image id"
+  type        = string
+  default     = "ami-0a443decce6d88dc2"
+}
+
+variable "ubuntu" {
+  description = "The ubuntu image id"
+  type        = string
+  default     = "ami-0567f647e75c7bc05"
+}
+
+#use lookup
+variable "amz-linux" {
+  description = "The amazon linux-2 image id"
+  type        = string
+  default     = "ami-0c9fe0dec6325a30c"
+}
+
